@@ -77,16 +77,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Carol & Ivan — 13.12.2026" },
+      { name: "description", content: "Casamento de Carol e Ivan — 13 de Dezembro de 2026, Vila Monsaraz, Rio de Janeiro. Confirme sua presença." },
+      { name: "author", content: "Carol & Ivan" },
+      { property: "og:title", content: "Carol & Ivan — 13.12.2026" },
+      { property: "og:description", content: "Casamento de Carol e Ivan — 13 de Dezembro de 2026, Vila Monsaraz." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&family=Italianno&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
