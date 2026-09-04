@@ -110,7 +110,7 @@ h1, h2, h3, h4 {
 .logo {
   font-family: var(--font-script);
   font-size: 1.875rem;
-  color: rgba(56, 48, 42, .9);
+  color: rgba(255, 255, 255, .95);
   transition: color .3s;
   line-height: 1;
 }
@@ -125,19 +125,31 @@ h1, h2, h3, h4 {
   font-size: .8125rem;
   text-transform: uppercase;
   letter-spacing: .18em;
-  color: rgba(56, 48, 42, .7);
+  color: rgba(255, 255, 255, .9);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, .35);
+  transition: color .3s;
 }
 @media (min-width: 768px) { .nav-links { display: flex; } }
 
 .nav-links button { transition: color .3s; }
-.nav-links button:hover { color: var(--foreground); }
+.nav-links button:hover { color: #fff; }
 
 .menu-toggle {
   padding: .5rem;
   margin-right: -.5rem;
-  color: var(--foreground);
+  color: rgba(255, 255, 255, .95);
+  transition: color .3s;
 }
 @media (min-width: 768px) { .menu-toggle { display: none; } }
+
+/* Sobre fundo claro (após rolar), volta para as cores escuras do tema */
+#site-header.scrolled .logo,
+#site-header.scrolled .menu-toggle { color: rgba(56, 48, 42, .9); }
+#site-header.scrolled .nav-links {
+  color: rgba(56, 48, 42, .7);
+  text-shadow: none;
+}
+#site-header.scrolled .nav-links button:hover { color: var(--foreground); }
 
 /* ═══════════════════════════════════════════════════════════
    MENU MOBILE
@@ -205,6 +217,7 @@ h1, h2, h3, h4 {
   height: 100%;
   width: 100%;
   object-fit: cover;
+  object-position: 50% 40%;
 }
 
 .hero-overlay {
@@ -225,7 +238,7 @@ h1, h2, h3, h4 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 1.5rem;
+  padding: 12rem 1.5rem 0;
   text-align: center;
   color: #fff;
 }
@@ -686,6 +699,7 @@ h1, h2, h3, h4 {
   height: 100%;
   width: 100%;
   object-fit: cover;
+  cursor: zoom-in;
   transition: transform 1.2s ease;
 }
 .gallery-item:hover img { transform: scale(1.05); }
@@ -710,6 +724,7 @@ h1, h2, h3, h4 {
   aspect-ratio: 3/4;
   object-fit: cover;
   height: auto;
+  cursor: zoom-in;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -897,6 +912,44 @@ h1, h2, h3, h4 {
 @keyframes toastOut {
   to { opacity: 0; transform: translateX(-50%) translateY(-12px); }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHTBOX — foto da galeria em tela cheia, com qualidade total
+═══════════════════════════════════════════════════════════ */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background-color: rgba(20, 17, 14, .95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility .3s;
+}
+.lightbox-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+.lightbox-overlay img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  animation: fadeSlideUp .3s ease;
+}
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  padding: .5rem;
+  color: #fff;
+  transition: opacity .2s;
+}
+.lightbox-close:hover { opacity: .7; }
 
 /* ═══════════════════════════════════════════════════════════
    REVEAL — animação ao entrar na viewport

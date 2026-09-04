@@ -108,6 +108,83 @@ function closeMobileMenu() {
   items.forEach(function (el) { observer.observe(el); });
 })();
 
+// ── CARREGAMENTO AUTOMÁTICO DE FOTOS ───────────────────────
+// Foto principal: coloque uma única foto em assets/foto-principal/ nomeada "1" (ex.: 1.jpg, 1.png...)
+// Álbum de fotos: coloque as fotos em assets/fotos-album/ numeradas em sequência (1, 2, 3...)
+(function () {
+  var EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
+
+  // Testa cada extensão até encontrar um arquivo existente; resolve com o src encontrado ou null
+  function probeImage(basePath) {
+    return new Promise(function (resolve) {
+      var i = 0;
+      function tryNext() {
+        if (i >= EXTENSIONS.length) { resolve(null); return; }
+        var src = basePath + '.' + EXTENSIONS[i++];
+        var img = new Image();
+        img.onload = function () { resolve(src); };
+        img.onerror = tryNext;
+        img.src = src;
+      }
+      tryNext();
+    });
+  }
+
+  // Observer próprio, pois os itens da galeria são criados depois da carga inicial da página
+  var revealObserver = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '-60px 0px' }
+  );
+
+  // Foto principal (hero)
+  var heroImg = document.getElementById('hero-img');
+  if (heroImg) {
+    probeImage('assets/foto-principal/1').then(function (src) {
+      if (src) heroImg.src = src;
+    });
+  }
+
+  // Álbum de fotos (galeria)
+  var galleryGrid = document.getElementById('gallery-grid');
+  var galleryCarousel = document.getElementById('gallery-carousel');
+  if (!galleryGrid || !galleryCarousel) return;
+
+  function loadGalleryPhoto(n) {
+    probeImage('assets/fotos-album/' + n).then(function (src) {
+      if (!src) return; // numeração termina no primeiro número não encontrado
+
+      var item = document.createElement('div');
+      item.className = 'gallery-item reveal' + (n % 3 === 0 ? ' row-span-2' : '');
+      var gridImg = document.createElement('img');
+      gridImg.src = src;
+      gridImg.alt = 'Carol e Ivan ' + n;
+      gridImg.loading = 'lazy';
+      gridImg.onclick = function () { openLightbox(src, gridImg.alt); };
+      item.appendChild(gridImg);
+      galleryGrid.appendChild(item);
+      revealObserver.observe(item);
+
+      var carouselImg = document.createElement('img');
+      carouselImg.src = src;
+      carouselImg.alt = 'Carol e Ivan ' + n;
+      carouselImg.loading = 'lazy';
+      carouselImg.onclick = function () { openLightbox(src, carouselImg.alt); };
+      galleryCarousel.appendChild(carouselImg);
+
+      loadGalleryPhoto(n + 1);
+    });
+  }
+
+  loadGalleryPhoto(1);
+})();
+
 // ── FORMULÁRIO RSVP ───────────────────────────────────────
 (function () {
   var form      = document.getElementById('rsvp-form');
@@ -204,6 +281,26 @@ function handleModalOverlayClick(event) {
   }
 }
 
+// ── LIGHTBOX (foto da galeria em tela cheia) ──────────────
+function openLightbox(src, alt) {
+  var img = document.getElementById('lightbox-img');
+  img.src = src;
+  img.alt = alt || '';
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleLightboxOverlayClick(event) {
+  if (event.target === document.getElementById('lightbox')) {
+    closeLightbox();
+  }
+}
+
 // ── COPIAR CHAVE PIX ──────────────────────────────────────
 function copyPix() {
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -259,5 +356,6 @@ document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') {
     closeMobileMenu();
     closeGiftModal();
+    closeLightbox();
   }
 });

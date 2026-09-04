@@ -66,7 +66,7 @@
   ══════════════════════════════════════════════════════ -->
   <section id="inicio" class="hero-section">
     <div class="hero-bg" id="hero-bg">
-      <img src="assets/hero.jpg" alt="Carol e Ivan" class="hero-img" width="1920" height="1280" />
+      <img id="hero-img" alt="Carol e Ivan" class="hero-img" width="1920" height="1280" />
       <div class="hero-overlay"></div>
     </div>
 
@@ -342,37 +342,11 @@
         <div class="heading-line"></div>
       </div>
 
-      <!-- Desktop: grade masonry -->
-      <div class="gallery-grid">
-        <div class="gallery-item row-span-2 reveal">
-          <img src="assets/gallery-1.jpg" alt="Carol e Ivan 1" loading="lazy" />
-        </div>
-        <div class="gallery-item reveal">
-          <img src="assets/gallery-2.jpg" alt="Carol e Ivan 2" loading="lazy" />
-        </div>
-        <div class="gallery-item reveal">
-          <img src="assets/gallery-4.jpg" alt="Carol e Ivan 4" loading="lazy" />
-        </div>
-        <div class="gallery-item row-span-2 reveal">
-          <img src="assets/gallery-3.jpg" alt="Carol e Ivan 3" loading="lazy" />
-        </div>
-        <div class="gallery-item row-span-2 reveal">
-          <img src="assets/gallery-5.jpg" alt="Carol e Ivan 5" loading="lazy" />
-        </div>
-        <div class="gallery-item reveal">
-          <img src="assets/gallery-6.jpg" alt="Carol e Ivan 6" loading="lazy" />
-        </div>
-      </div>
+      <!-- Desktop: grade masonry (preenchido automaticamente via script.js) -->
+      <div class="gallery-grid" id="gallery-grid"></div>
 
-      <!-- Mobile: carrossel horizontal -->
-      <div class="gallery-carousel">
-        <img src="assets/gallery-1.jpg" alt="Carol e Ivan 1" loading="lazy" />
-        <img src="assets/gallery-2.jpg" alt="Carol e Ivan 2" loading="lazy" />
-        <img src="assets/gallery-3.jpg" alt="Carol e Ivan 3" loading="lazy" />
-        <img src="assets/gallery-4.jpg" alt="Carol e Ivan 4" loading="lazy" />
-        <img src="assets/gallery-5.jpg" alt="Carol e Ivan 5" loading="lazy" />
-        <img src="assets/gallery-6.jpg" alt="Carol e Ivan 6" loading="lazy" />
-      </div>
+      <!-- Mobile: carrossel horizontal (preenchido automaticamente via script.js) -->
+      <div class="gallery-carousel" id="gallery-carousel"></div>
 
     </div>
   </section>
@@ -444,6 +418,18 @@
 
   <!-- Toast -->
   <div id="toast" class="toast" aria-live="polite" hidden></div>
+
+  <!-- ══════════════════════════════════════════════════════
+       LIGHTBOX (foto da galeria em tela cheia)
+  ══════════════════════════════════════════════════════ -->
+  <div id="lightbox" class="lightbox-overlay" onclick="handleLightboxOverlayClick(event)">
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Fechar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+      </svg>
+    </button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
 
   <script src="script.js"></script>
 </body>
