@@ -8,10 +8,12 @@
   <meta property="og:title" content="Carol &amp; Ivan" />
   <meta property="og:description" content="13 de Dezembro de 2026 — Vila Monsaraz, Rio de Janeiro." />
 
+  <link rel="preload" as="image" href="assets/foto-principal/1.jpg" fetchpriority="high" />
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Italianno&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500&family=Italianno&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -66,7 +68,7 @@
   ══════════════════════════════════════════════════════ -->
   <section id="inicio" class="hero-section">
     <div class="hero-bg" id="hero-bg">
-      <img id="hero-img" alt="Carol e Ivan" class="hero-img" width="1920" height="1280" />
+      <img id="hero-img" src="assets/foto-principal/1.jpg" alt="Carol e Ivan" class="hero-img" width="1800" height="2700" fetchpriority="high" decoding="async" />
       <div class="hero-overlay"></div>
     </div>
 
@@ -395,7 +397,7 @@
 
       <div class="modal-qr">
         <div class="qr-wrapper">
-          <img id="modal-qr-img" src="" alt="QR Code PIX" width="220" height="220" />
+          <img id="modal-qr-img" src="assets/qr-pix.svg" alt="QR Code PIX" width="220" height="220" />
         </div>
       </div>
 
@@ -431,6 +433,6 @@
     <img id="lightbox-img" src="" alt="" />
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>

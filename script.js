@@ -109,7 +109,7 @@ function closeMobileMenu() {
 })();
 
 // ── CARREGAMENTO AUTOMÁTICO DE FOTOS ───────────────────────
-// Foto principal: coloque uma única foto em assets/foto-principal/ nomeada "1" (ex.: 1.jpg, 1.png...)
+// Foto principal: assets/foto-principal/1.jpg (referenciada direto no index.html)
 // Álbum de fotos: coloque as fotos em assets/fotos-album/ numeradas em sequência (1, 2, 3...)
 (function () {
   var EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
@@ -143,14 +143,6 @@ function closeMobileMenu() {
     { threshold: 0.1, rootMargin: '-60px 0px' }
   );
 
-  // Foto principal (hero)
-  var heroImg = document.getElementById('hero-img');
-  if (heroImg) {
-    probeImage('assets/foto-principal/1').then(function (src) {
-      if (src) heroImg.src = src;
-    });
-  }
-
   // Álbum de fotos (galeria)
   var galleryGrid = document.getElementById('gallery-grid');
   var galleryCarousel = document.getElementById('gallery-carousel');
@@ -166,6 +158,7 @@ function closeMobileMenu() {
       gridImg.src = src;
       gridImg.alt = 'Carol e Ivan ' + n;
       gridImg.loading = 'lazy';
+      gridImg.decoding = 'async';
       gridImg.onclick = function () { openLightbox(src, gridImg.alt); };
       item.appendChild(gridImg);
       galleryGrid.appendChild(item);
@@ -175,6 +168,7 @@ function closeMobileMenu() {
       carouselImg.src = src;
       carouselImg.alt = 'Carol e Ivan ' + n;
       carouselImg.loading = 'lazy';
+      carouselImg.decoding = 'async';
       carouselImg.onclick = function () { openLightbox(src, carouselImg.alt); };
       galleryCarousel.appendChild(carouselImg);
 
@@ -261,9 +255,6 @@ var PIX_KEY = 'carolivan@casamento.com.br';
 
 function openGiftModal(title) {
   document.getElementById('modal-title').textContent = title;
-  document.getElementById('modal-qr-img').src =
-    'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' +
-    encodeURIComponent(PIX_KEY);
   document.getElementById('pix-key-text').textContent = PIX_KEY;
   document.getElementById('gift-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
