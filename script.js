@@ -179,99 +179,6 @@ function closeMobileMenu() {
   loadGalleryPhoto(1);
 })();
 
-// ── FORMULÁRIO RSVP ───────────────────────────────────────
-(function () {
-  var form      = document.getElementById('rsvp-form');
-  var nameInput = document.getElementById('rsvp-name');
-  var btn       = document.getElementById('rsvp-btn');
-  var btnInner  = document.getElementById('rsvp-btn-inner');
-  var successEl = document.getElementById('rsvp-success');
-  var errorEl   = document.getElementById('rsvp-error');
-
-  if (!form) return;
-
-  // Esconder erro enquanto digita
-  nameInput.addEventListener('input', function () {
-    errorEl.hidden = true;
-  });
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    var name = nameInput.value.trim();
-
-    // Validação básica
-    if (!name || name.length < 3) {
-      errorEl.textContent = 'Por favor, digite seu nome completo.';
-      errorEl.hidden = false;
-      return;
-    }
-
-    // Estado: carregando
-    btn.disabled = true;
-    nameInput.disabled = true;
-    errorEl.hidden = true;
-    btnInner.innerHTML = '<span class="spinner"></span>&nbsp;Confirmando...';
-
-    // Simulação de chamada à API (substituir pelo endpoint real)
-    setTimeout(function () {
-      // Lista de nomes de teste — substitua por chamada real ao Google Apps Script
-      // Exemplo real (comentado):
-      //
-      // fetch('https://script.google.com/macros/s/SEU_DEPLOY_ID/exec', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ name: name })
-      // })
-      // .then(function(res) { return res.json(); })
-      // .then(function(data) {
-      //   if (!data.found) throw new Error('not_found');
-      //   showSuccess();
-      // })
-      // .catch(function() { showError(); });
-
-      var mockGuests = ['carol', 'ivan', 'convidado', 'maria silva', 'joão'];
-      var found = mockGuests.some(function (g) {
-        return name.toLowerCase().includes(g);
-      });
-
-      if (found) {
-        btnInner.innerHTML = '&#10003;&nbsp;Confirmado';
-        successEl.hidden = false;
-        successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } else {
-        btn.disabled = false;
-        nameInput.disabled = false;
-        btnInner.textContent = 'Confirmar';
-        errorEl.textContent = 'Nome não encontrado na lista de convidados. Verifique a ortografia.';
-        errorEl.hidden = false;
-      }
-    }, 1400);
-  });
-})();
-
-// ── MODAL DE PRESENTE (PIX) ────────────────────────────────
-var PIX_KEY = 'carolivan@casamento.com.br';
-
-function openGiftModal(title) {
-  document.getElementById('modal-title').textContent = title;
-  document.getElementById('pix-key-text').textContent = PIX_KEY;
-  document.getElementById('gift-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeGiftModal() {
-  document.getElementById('gift-modal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// Fechar ao clicar fora do card
-function handleModalOverlayClick(event) {
-  if (event.target === document.getElementById('gift-modal')) {
-    closeGiftModal();
-  }
-}
-
 // ── LIGHTBOX (foto da galeria em tela cheia) ──────────────
 function openLightbox(src, alt) {
   var img = document.getElementById('lightbox-img');
@@ -292,61 +199,10 @@ function handleLightboxOverlayClick(event) {
   }
 }
 
-// ── COPIAR CHAVE PIX ──────────────────────────────────────
-function copyPix() {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(PIX_KEY).then(function () {
-      showToast('Chave PIX copiada!');
-    }).catch(function () {
-      fallbackCopy();
-    });
-  } else {
-    fallbackCopy();
-  }
-}
-
-function fallbackCopy() {
-  var el = document.createElement('textarea');
-  el.value = PIX_KEY;
-  el.style.position = 'fixed';
-  el.style.opacity = '0';
-  document.body.appendChild(el);
-  el.focus();
-  el.select();
-  try {
-    document.execCommand('copy');
-    showToast('Chave PIX copiada!');
-  } catch (err) {
-    showToast('Não foi possível copiar. Use: ' + PIX_KEY);
-  }
-  document.body.removeChild(el);
-}
-
-// ── TOAST (notificação) ────────────────────────────────────
-var toastTimer;
-
-function showToast(message) {
-  var toast = document.getElementById('toast');
-  toast.textContent = message;
-
-  // Reinicia a animação removendo e re-adicionando o elemento
-  if (toast._clone) toast._clone.remove();
-  var clone = toast.cloneNode(true);
-  clone.hidden = false;
-  toast.parentNode.insertBefore(clone, toast);
-  toast._clone = clone;
-
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(function () {
-    clone.hidden = true;
-  }, 3000);
-}
-
 // ── TECLA ESC fecha sobreposições ─────────────────────────
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') {
     closeMobileMenu();
-    closeGiftModal();
     closeLightbox();
   }
 });
